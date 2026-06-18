@@ -26,19 +26,32 @@ def indexRota():
 
 @app.route('/cadastrar', methods=['POST'])
 def criar_cadastro():
-    #Recebe os dados do formulário
-    cpf = request.form['cpf']
-    primeiro_nome = request.form['primeiro_nome']
-    sobrenome = request.form['sobrenome']
-    idade = request.form['idade']
 
-    #Criar conexão com o banco de dados
-    conexao = mysql.connector.connect(**bd_config)
+    try:
+        #Recebe os dados do formulário
+        cpf = request.form['cpf']
+        primeiro_nome = request.form['primeiro_nome']
+        sobrenome = request.form['sobrenome']
+        idade = request.form['idade']
 
-    #Levar instruções SQL do Python até o banco de dados
-    curso =  conexao.cursor()
+        #Criar conexão com o banco de dados
+        conexao = mysql.connector.connect(**bd_config)
 
-    query = "INSERT INTO cliente1 (CPF, PRIMEIRO_NOME, NOME, IDADE) VALUES (%s,%s,%s,%s)"
+        #Levar instruções SQL do Python até o banco de dados
+        curso =  conexao.cursor()
+
+        query = "INSERT INTO cliente1 (CPF, PRIMEIRO_NOME, NOME, IDADE) VALUES (%s,%s,%s,%s)"
+        curso.execute(query,(cpf,primeiro_nome,sobrenome,idade))
+
+        #salvar as alteração
+        #fechar o cursor
+        #fechar a conexão com o banco de dados
+        curso.comit()
+        curso.close()
+        conexao.close()
+    except mysql.connector.Error as err:
+        return f"Erro ao gravar no Banco: {err}"
+
 
 # Biblioteca mysql.connector conecta o Python com o MySQL
 # decorador tem @
