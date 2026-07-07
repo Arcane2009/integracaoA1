@@ -14,7 +14,7 @@ bd_config = {
     'host': '127.0.0.1',
     'user': 'root',
     'password': 'escola',
-    'database': 'cadastro1',
+    'database': 'cadastros1',
     'ssl_disabled': True
 }
 
@@ -41,13 +41,13 @@ def criar_cadastro():
         curso =  conexao.cursor()
 
         query = "INSERT INTO cliente1 (CPF, PRIMEIRO_NOME, NOME, IDADE) VALUES (%s,%s,%s,%s)"
-        conexao.execute(query,(cpf,primeiro_nome,sobrenome,idade))
+        curso.execute(query,(cpf,primeiro_nome,sobrenome,idade))
 
         #salvar as alteração
         #fechar o cursor
         #fechar a conexão com o banco de dados
         conexao.commit()
-        conexao.close()
+        curso.close()
         conexao.close()
 
         return f"<h3> cliente {primeiro_nome} gravado com sucesso! </h3> <a href = '/'> volta </a>"
@@ -55,6 +55,8 @@ def criar_cadastro():
         return f"Erro ao gravar no Banco: {err}"
     # Biblioteca mysql.connector conecta o Python com o MySQL
     # decorador tem @
-    
+
+
+
 if __name__ == '__main__':
     app.run(debug = True)
